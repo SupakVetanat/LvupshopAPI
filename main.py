@@ -1,7 +1,7 @@
 import json
 from typing import Union
 
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 import pymongo
 import dns
 from bson.json_util import dumps
@@ -49,6 +49,8 @@ def read_itemname(name: str):
             where = {'name': {'$regex': name, '$options': 'i'}}
             cursor = db.Games.find(where)
             list_cur = list(cursor)
+            if(list_cur==[]):
+                raise HTTPException(status_code=404, detail="Item not found")
             json_data = dumps(list_cur, ensure_ascii=False)
             return json_data
 
@@ -59,6 +61,8 @@ def read_user(email: str,password: str):
             where = {"$and":[{'email': email},{'password':password}]}
             cursor = db.Users.find(where)
             list_cur = list(cursor)
+            if(list_cur==[]):
+                raise HTTPException(status_code=404, detail="User not found")
             json_data = dumps(list_cur, ensure_ascii=False)
             return json.loads(json_data)
 
@@ -82,3 +86,4 @@ def getOrder():
             return json_data
 
 # print(json.loads(getOrder()))
+# read_itemname('aaaaa')
