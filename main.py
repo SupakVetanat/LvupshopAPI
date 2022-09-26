@@ -139,4 +139,4 @@ def post_order(Item: Item):
             db = conn.get_database("LvupShop")
             data = {'username':Item.username,'name':Item.name,'category':Item.category,'image':Item.image,'price':Item.price,'detail':Item.detail,'isRecommended': False,'isPopular': False}
             db.Product.insert_one(data)
-            return {'status' : 'success','echo':Item}
+            return Item
