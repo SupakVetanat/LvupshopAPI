@@ -1,5 +1,4 @@
 import json
-from tokenize import Double
 from typing import Union
 
 from fastapi import FastAPI,HTTPException
@@ -26,7 +25,7 @@ class Item(BaseModel):
     name: str
     category: str
     image: str
-    price: Double
+    price: float
     detail: str
 
 
