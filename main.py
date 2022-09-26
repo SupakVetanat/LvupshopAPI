@@ -1,4 +1,5 @@
 import json
+from tokenize import Double
 from typing import Union
 
 from fastapi import FastAPI,HTTPException
@@ -18,6 +19,15 @@ class User(BaseModel):
     username: str
     birth: str
     gender: str
+
+
+class Item(BaseModel):
+    username: str
+    name: str
+    category: str
+    image: str
+    price: Double
+    detail: str
 
 
 
@@ -123,3 +133,11 @@ def read_ordername(name: str):
                 raise HTTPException(status_code=404, detail="Item not found")
             json_data = dumps(list_cur, ensure_ascii=False)
             return json.loads(json_data)
+
+@app.post("/order/post")
+def regis_user(Item: Item):
+    with pymongo.MongoClient(cloudDatabase) as conn:
+            db = conn.get_database("LvupShop")
+            data = {'username':Item.username,'name':Item.name,'category':Item.category,'image':Item.image,'price':Item.price,'detail':Item.detail,'isRecommended': False,'isPopular': False}
+            db.Product.insert_one(data)
+            return {'status' : 'success','echo':Item}
