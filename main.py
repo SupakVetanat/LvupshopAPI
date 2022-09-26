@@ -87,3 +87,39 @@ def getOrder():
 
 # print(json.loads(getOrder()))
 # read_itemname('aaaaa')
+
+@app.get("/order")
+def read_order():
+      with pymongo.MongoClient(cloudDatabase) as conn:
+            db = conn.get_database("LvupShop")
+            cursor = db.Product.find()
+            list_cur = list(cursor)
+            
+            json_data = dumps(list_cur, ensure_ascii=False)
+
+            return json.loads(json_data)
+
+@app.get("/order/user/{username}")
+def read_userOrder(username: str):
+     with pymongo.MongoClient(cloudDatabase) as conn:
+            db = conn.get_database("LvupShop")
+            where = {'username': username}
+            cursor = db.Product.find(where)
+            list_cur = list(cursor)
+            if(list_cur==[]):
+                raise HTTPException(status_code=404, detail="Items not found")
+            json_data = dumps(list_cur, ensure_ascii=False)
+            return json.loads(json_data)
+
+
+@app.get("/order/{name}")
+def read_ordername(name: str):
+     with pymongo.MongoClient(cloudDatabase) as conn:
+            db = conn.get_database("LvupShop")
+            where = {'name': {'$regex': name, '$options': 'i'}}
+            cursor = db.Product.find(where)
+            list_cur = list(cursor)
+            if(list_cur==[]):
+                raise HTTPException(status_code=404, detail="Item not found")
+            json_data = dumps(list_cur, ensure_ascii=False)
+            return json.loads(json_data)
