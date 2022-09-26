@@ -135,7 +135,7 @@ def read_ordername(name: str):
             return json.loads(json_data)
 
 @app.post("/order/post")
-def regis_user(Item: Item):
+def post_order(Item: Item):
     with pymongo.MongoClient(cloudDatabase) as conn:
             db = conn.get_database("LvupShop")
             data = {'username':Item.username,'name':Item.name,'category':Item.category,'image':Item.image,'price':Item.price,'detail':Item.detail,'isRecommended': False,'isPopular': False}
