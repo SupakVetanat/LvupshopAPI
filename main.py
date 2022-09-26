@@ -30,19 +30,19 @@ def games():
     return json.loads(getOrder())
 
 
-@app.get("/games/{item_id}")
-def read_item(item_id: int):
-     with pymongo.MongoClient(cloudDatabase) as conn:
-            db = conn.get_database("LvupShop")
-            where = {'game_id':item_id}
-            cursor = db.Games.find(where)
-            list_cur = list(cursor)
+# @app.get("/games/{item_id}")
+# def read_item(item_id: int):
+#      with pymongo.MongoClient(cloudDatabase) as conn:
+#             db = conn.get_database("LvupShop")
+#             where = {'game_id':item_id}
+#             cursor = db.Games.find(where)
+#             list_cur = list(cursor)
             
-            json_data = dumps(list_cur, ensure_ascii=False)
+#             json_data = dumps(list_cur, ensure_ascii=False)
 
-            return json_data
+#             return json_data
 
-@app.get("/games/name/{name}")
+@app.get("/games/{name}")
 def read_itemname(name: str):
      with pymongo.MongoClient(cloudDatabase) as conn:
             db = conn.get_database("LvupShop")
